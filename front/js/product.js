@@ -71,6 +71,7 @@ Dans  la réponse (return) de notre précédent .then nous allons demander à r�
       console.log('click');
 
      //Stocker les 3 valeurs qui sont l'id, la couleur et quantité sélectionnés
+     
      const colors = document.querySelector("#colors");
       //Utilisation de la methode Truthy/Flasy (!=négation de la valeur se trouvant après)
       /*Truthy
@@ -93,7 +94,7 @@ Dans  la réponse (return) de notre précédent .then nous allons demander à r�
       }
 
     const quantity = document.querySelector("#quantity");
-     if (!quantity.value){
+     if (quantity.value == 0){
       alert("Veuillez renseigner une quantité");
       return;
     }
