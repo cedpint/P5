@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 console.log(window.location.search);
 /* Window permet de récupérer des informations sur la fenêtre du navigateur
 Donne accès à la propriété location qui est l'endroit ou on se situe qui est l'url
@@ -53,8 +52,8 @@ Dans  la réponse (return) de notre précédent .then nous allons demander à r�
     // Option value
     for (let color of product.colors) {
       let colorOfItem = document.createElement("option");
-      document.querySelector("#colors").appendChild(colorOfItem),
-        (colorOfItem.value = color);
+      document.querySelector("#colors").appendChild(colorOfItem);
+      colorOfItem.value = color;
       colorOfItem.innerHTML = color;
     }
 
@@ -66,70 +65,48 @@ Dans  la réponse (return) de notre précédent .then nous allons demander à r�
     const button = document.querySelector("#addToCart");
     console.log(button);
 
-    //Button Ajouter au panier addEventlistener au click ?????????
-  });
-=======
-console.log(window.location.search);
-/* Window permet de récupérer des informations sur la fenêtre du navigateur
-Donne accès à la propriété location qui est l'endroit ou on se situe qui est l'url
-*/
-const search = window.location.search;
-const searchParams = new URLSearchParams(search);
-/* searchParams est une class*/
-console.log(searchParams);
+    //addEventlistener permet de créer un écouteur d'évènement
+    //Séléction de l'élément html + ajout de la fonction addeventlistener contenant deux paramètres : le 1er = type d'évenement (click) et le deuxième une fonction callback qui s'execute en retour du click
+    button.addEventListener("click",() => {
+      console.log('click');
 
-const id = searchParams.get("id");
-console.log(id);
+     //Stocker les 3 valeurs qui sont l'id, la couleur et quantité sélectionnés
+     const colors = document.querySelector("#colors");
+      //Utilisation de la methode Truthy/Flasy (!=négation de la valeur se trouvant après)
+      /*Truthy
+         *true
+         *chiffre > 0
+         *"chaine de caratères remplie"
+         *objet rempli {id: "truc"}
+       
+        *Falsy
+         *false
+         *0 ou < 0
+         *""
+         *null
+         *undefined
+         *void
+      */
+      if(!colors.value){
+        alert("Veuillez renseigner une couleur");
+        return;
+      }
 
-fetch("http://localhost:3000/api/products")
-  /* 
-fetch() permet d'aller chercher des informations contenues dans son argument () comme par exemple ici l'url contenant les informations
-Il retourne ensuite une promesse contenant une réponse via .then que l'on va demander à nous retourner en format.json 
-*/
-  .then((response) => {
-    return response.json();
-  })
-
-  /* 
-Dans la réponse (return) de notre précédent .then nous allons demander à récupérer les produits se trouvant dans notre réponse
-*/
-  .then((products) => {
-    const section = document.getElementById("items");
-    /* Création d'une constante nommée "section" nous permettant d'aller chercher dans le document les "items" grâce aux ID du tableau se trouvant dans le document */
-    console.log(section);
-    /* Console.log nous permet d'afficher dans le DOM les éléments de la constante "section" */
-
-    /* Création d'une boucle via for () contenant une variable (via let) "i" qui a pour valeur 0
-        la longueur des produits est également supérieur à sa valeur (0)
-        et à chaque fois que la boucle se déclenche nous ajoutons 1 (++) */
-    for (let i = 0; i < products.length; i++) {
-      const product = products[i];
-      /* Création d'une constante product qui a pour valeur les produits contenant la valeur de la variable "i" */
-
-      section.innerHTML +=
-        /* "innerHTML" permet de modififer le contenu d'une balise html
-       "+=" Opérateur d'affectation d'addition */
-        `
-      <a href="./product.html?id=${product._id}">
-        <article>
-          <img src="${product.imageUrl}" alt=${product.altTxt}">
-          <h3 class="productName">${product.name}</h3>
-          <p class="productDescription">${product.description}</p>
-        </article>
-      </a>
-
-      <a href="./product.html?id=${product._id}">
-        <article>
-          <img src="${product.imageUrl}" alt=${product.altTxt}">
-          <h3 class="productName">${product.name}</h3>
-          <p class="productDescription">${product.description}</p>
-        </article>
-      </a>
-    
-    `;
+    const quantity = document.querySelector("#quantity");
+     if (!quantity.value){
+      alert("Veuillez renseigner une quantité");
+      return;
     }
+      
+     const produit = {
+      id: id,
+      color: colors.value,
+      quantity: quantity.value,
+     } 
+
+     //Ajouter les produits au panier, setItem permet d'initialiser un élément dans le localstorage contenant deux paramètres (contenant une clé et une valeur)
+     //Conversion de la variable "produit" en JSON 
+     localStorage.setItem("panier", JSON.stringify(produit));
+
+    });
   });
-
-
-  /*TESTTTTtttttttttttttTTTTT */
->>>>>>> 2d96a3fe1aadaaf0cd37ca67df8cbef7f1308d97
