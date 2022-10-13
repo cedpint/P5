@@ -94,7 +94,13 @@ Dans  la réponse (return) de notre précédent .then nous allons demander à r�
       }
 
     const quantity = document.querySelector("#quantity");
-     if (quantity.value == 0){
+
+    //Attention au type string/number =typeof;
+      console.log(typeof quantity.value);
+
+    const qtyValue = parseInt(quantity.value);
+
+     if (qtyValue < 1){
       alert("Veuillez renseigner une quantité");
       return;
     }
@@ -102,12 +108,32 @@ Dans  la réponse (return) de notre précédent .then nous allons demander à r�
      const produit = {
       id: id,
       color: colors.value,
-      quantity: quantity.value,
+      quantity: qtyValue,
      } 
+
+     let products = [];
+     //Vérifie si truthy avant de faire un JSONparse
+     if (localStorage.panier && JSON.parse(localStorage.panier).length) {
+      products = JSON.parse(localStorage.panier)
+    }
+
+    //Permet de réunir les produits par id et couleur similaires
+    const foundProduct = products.find(product => product.id === id && product.color === colors.value);
+    
+    //Si pas de produit trouvé qui ne correspond pas à la constante au dessus push le nouveau produit dans le panier
+    if (foundProduct) {
+      foundProduct.quantity += qtyValue;
+    } else {
+     products.push(produit);
+    }
+
 
      //Ajouter les produits au panier, setItem permet d'initialiser un élément dans le localstorage contenant deux paramètres (contenant une clé et une valeur)
      //Conversion de la variable "produit" en JSON 
-     localStorage.setItem("panier", JSON.stringify(produit));
-
+     localStorage.setItem("panier", JSON.stringify(products));
+     alert(" Vous avez ajouté " + quantity.value  +   product.name, + " au panier");
+     return;
     });
+
+
   });
