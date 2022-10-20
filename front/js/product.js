@@ -120,10 +120,11 @@ Dans  la réponse (return) de notre précédent .then nous allons demander à r�
     //Permet de réunir les produits par id et couleur similaires
     const foundProduct = products.find(product => product.id === id && product.color === colors.value);
     
-    //Si pas de produit trouvé qui ne correspond pas à la constante au dessus push le nouveau produit dans le panier
+    //Si pas de produit trouvé ou qui ne correspond pas à la constante au dessus push le nouveau produit dans le panier
     if (foundProduct) {
       foundProduct.quantity += qtyValue;
     } else {
+      //Insère une ligne dans le tableau
      products.push(produit);
     }
 
@@ -131,7 +132,7 @@ Dans  la réponse (return) de notre précédent .then nous allons demander à r�
      //Ajouter les produits au panier, setItem permet d'initialiser un élément dans le localstorage contenant deux paramètres (contenant une clé et une valeur)
      //Conversion de la variable "produit" en JSON 
      localStorage.setItem("panier", JSON.stringify(products));
-     alert(" Vous avez ajouté " + quantity.value  +   product.name, + " au panier");
+     alert(" Vous avez ajouté " + quantity.value + " " +  product.name + " au panier");
      return;
     });
 
