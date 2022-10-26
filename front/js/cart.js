@@ -5,9 +5,12 @@ const panier = JSON.parse(localStorage.getItem('panier'));
 //Appelle la fonction displayData
 getData();
 
+let totalPrice = 0;
+let totalQty = 0;
+
 //Permet d'afficher les produits du panier
 async function getData() {
-    for (let i = 0; i < panier.lenght; i++) {
+    for (let i = 0; i < panier.length; i++) {
 //Récupérer les info produits individuellement
     const productLs = panier[i];
     const response = await fetch (
@@ -23,7 +26,7 @@ async function getData() {
     displayData(product);  
     
 //Fonction pour calculer le prix total
-
+    displayTotalPrice(product);
 
 //Fonction pour calculer la quantité totale
     displayTotalQuantity(product);
@@ -59,19 +62,24 @@ function displayData(product) {
     </article>`;
 }
 
-function displayTotalQuantity(product){
-    const cartPrice = document.getElementById('cart__price');
+function displayTotalPrice(product){
+    const cartPrice = document.getElementById('totalPrice');
 
-    cartPrice.innerHTML += `
-    <div class="cart__price">
-    <p>Total (<span id="totalQuantity">${product.quantity}</span> articles) : <span id="totalPrice"><!-- 84,00 --></span> €</p>
-  </div>`;
+    totalPrice += product.price * product.quantity;
+
+    cartPrice.innerHTML = totalPrice;
 }
 
+function displayTotalQuantity(product){
+    const cartQty = document.getElementById('totalQuantity')
 
+    totalQty += product.quantity;
+
+    cartQty.innerHTML = totalQty;
+}
 
 //sélection du html
-const cartAndFormContainer = document.getElementById('cartAndFormContainer');
+//const cartAndFormContainer = document.getElementById('cartAndFormContainer');
 
 //Permet d'afficher les produits dans le LocalStorage
 
