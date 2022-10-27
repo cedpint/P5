@@ -125,7 +125,7 @@ function deleteProduct(){
 
     for(let i = 0; i < inputs.length; i++){
         const input = inputs[i];
-        input.addEventListener('change', (event) => {
+        input.addEventListener('click', (event) => {
             const userValue = parseInt(event.target.value);
 
             if (userValue < 1){
