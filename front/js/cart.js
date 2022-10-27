@@ -1,5 +1,6 @@
 //Permet de récupérer les produits du localstorage
 const panier = JSON.parse(localStorage.getItem('panier'));
+const product = JSON.parse(localStorage.getItem('product'));
 let totalPrice;
 let totalQty;
 
@@ -44,7 +45,7 @@ async function getData() {
 
 
  //Fonction pour supprimer dezs produits   
-    deleteProduct();
+    deleteItem();
 
 function displayData(product) {
     const cartItems = document.getElementById('cart__items');
@@ -120,8 +121,8 @@ function modifyQuantity(){
 }
 
 
-function deleteProduct(){
-    const inputs = document.querySelectorAll('.itemQuantity');
+function deleteItem(){
+    const inputs = document.querySelectorAll('.deleteItem');
 
     for(let i = 0; i < inputs.length; i++){
         const input = inputs[i];
@@ -129,7 +130,7 @@ function deleteProduct(){
             const userValue = parseInt(event.target.value);
 
             if (userValue < 1){
-                alert('Veuillez renseigner une quantité supérieure à 0');
+                alert(" Vous avez supprimé " + quantity.value + " " +  product.name + " du panier");
                 return;
             }
 
@@ -137,11 +138,11 @@ function deleteProduct(){
             const id = article.dataset.id;
             const color = article.dataset.color;
 
-            const currentProduct = panier.splice((product) => product.id === id && product.color === color);
+            const deleteProduct = article.splice(i, 1);
 
-            currentProduct.quantity = userValue;
+            deleteProduct.quantity = userValue;
 
-                localStorage.setItem("panier", JSON.stringify(panier));
+                localStorage.setItem("product", JSON.stringify(product));
                 
                 getData ();
         });
