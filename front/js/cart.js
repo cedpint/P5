@@ -16,6 +16,11 @@ async function getData() {
     totalPrice = 0;
     totalQty = 0;
 
+    if(!panier.length) {
+        const main = document.querySelector("main");
+        main.innerHTML = "Aucun article dans le panier";
+    }
+
     for (let i = 0; i < panier.length; i++) {
 //Récupérer les info produits individuellement
     const productLs = panier[i];
@@ -36,16 +41,15 @@ async function getData() {
 
 //Fonction pour calculer la quantité totale
     displayTotalQuantity(product);
-   
-    }
-}
+  }
 
- //Fonction pour modifier la quantité 
+//Fonction pour modifier la quantité 
     modifyQuantity();
-
 
  //Fonction pour supprimer dezs produits   
     deleteItem();
+
+}
 
 function displayData(product) {
     const cartItems = document.getElementById('cart__items');
@@ -98,20 +102,27 @@ function modifyQuantity(){
         const input = inputs[i];
         input.addEventListener('change', (event) => {
             const userValue = parseInt(event.target.value);
-
-            if (userValue < 1){
-                alert('Veuillez renseigner une quantité supérieure à 0');
-                return;
-            }
-
             const article = input.closest('article');
             const id = article.dataset.id;
             const color = article.dataset.color;
 
+            if (userValue === 0) {
+                const index = panier.findIndex(
+                    (product) => product.id === id && product.color === color
+                );
+                panier.splice(index, 1);    
+            } else {
+                if(userValue < 1) {
+                    alert('Veuillez renseigner une quantité supérieur à 0');
+                    return;
+                }
+
             const currentProduct = panier.find(
-                (product) => product.id === id && product.color === color);
+                (product) => product.id === id && product.color === color
+                );
 
             currentProduct.quantity = userValue;
+            }
 
                 localStorage.setItem("panier", JSON.stringify(panier));
                 
@@ -138,20 +149,103 @@ function deleteItem(){
             const id = article.dataset.id;
             const color = article.dataset.color;
 
-            const deleteProduct = article.splice(i, 1);
+            //Permet de retourner l'index de lélément dans le panier
+            const index = panier.findIndex(
+                (product) => product.id === id && product.color === color
+            );
+            panier.splice(index, 1);
 
-            deleteProduct.quantity = userValue;
-
-                localStorage.setItem("product", JSON.stringify(product));
+                localStorage.setItem("panier", JSON.stringify(panier));
                 
                 getData ();
         });
     }
 }
 
-//sélection du html
-//const cartAndFormContainer = document.getElementById('cartAndFormContainer');
+//Controle saisies formulaire
 
-//Permet d'afficher les produits dans le LocalStorage
+//Controle FIRSTNAME
+const firstName = document.getElementById('firstName');
+firstName.addEventListener("input", (event) => {
+    //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
+    const regex = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/);
+    const valid = regex.test(event.target.value);
 
-                    
+    const errorEl = document.getElementById('firstNameErrorMsg');
+
+    if (!valid){
+        errorEl.textContent = "Saisie non valide";
+    } else {
+        errorEl.textContent = "";
+    }
+
+});
+
+//Controle LASTNAME
+const lastName = document.getElementById('lastName');
+lastName.addEventListener("input", (event) => {
+    //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
+    const regex = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/);
+    const valid = regex.test(event.target.value);
+
+    const errorEl = document.getElementById('lastNameErrorMsg');
+
+    if (!valid){
+        errorEl.textContent = "Saisie non valide";
+    } else {
+        errorEl.textContent = "";
+    }
+
+});
+
+//Controle ADDRESS
+const address = document.getElementById('address');
+address.addEventListener("input", (event) => {
+    //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
+    const regex = new RegExp("^[^.?!:;,/\\/_-]([, .:;'-]?[0-9a-zA-Zàâäéèêëïîôöùûüç])+[^.?!:;,/\\/_-]$");
+    const valid = regex.test(event.target.value);
+
+    const errorEl = document.getElementById('addressErrorMsg');
+
+    if (!valid){
+        errorEl.textContent = "Saisie non valide";
+    } else {
+        errorEl.textContent = "";
+    }
+
+});
+
+//Controle CITY
+const city = document.getElementById('city');
+city.addEventListener("input", (event) => {
+    //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
+    const regex = new RegExp(/^[a-z][a-z.,]{1,31}$|^$/i);
+    const valid = regex.test(event.target.value);
+
+    const errorEl = document.getElementById('cityErrorMsg');
+
+    if (!valid){
+        errorEl.textContent = "Saisie non valide";
+    } else {
+        errorEl.textContent = "";
+    }
+
+});
+
+
+//Controle EMAIL
+const email = document.getElementById('email');
+email.addEventListener("input", (event) => {
+    //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
+    const regex = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
+    const valid = regex.test(event.target.value);
+
+    const errorEl = document.getElementById('emailErrorMsg');
+
+    if (!valid){
+        errorEl.textContent = "Saisie non valide";
+    } else {
+        errorEl.textContent = "";
+    }
+
+});
