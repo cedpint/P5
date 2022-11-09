@@ -63,7 +63,7 @@ function displayData(product) {
                 <div class="cart__item__content__description">
                     <h2>${product.name}</h2>
                     <p>${product.color}</p>
-                    <p>${product.price}</p>
+                    <p>${product.price} €</p>
                 </div>
         <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
@@ -163,13 +163,18 @@ function deleteItem(){
 }
 
 //Controle saisies formulaire
+const nameRegex = new RegExp(
+    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
+  );
 
 //Controle FIRSTNAME
 const firstName = document.getElementById('firstName');
 firstName.addEventListener("input", (event) => {
     //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
-    const regex = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/);
-    const valid = regex.test(event.target.value);
+    const regex = new RegExp(
+        /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
+      );
+    const valid = nameRegex.test(event.target.value);
 
     const errorEl = document.getElementById('firstNameErrorMsg');
 
@@ -185,8 +190,8 @@ firstName.addEventListener("input", (event) => {
 const lastName = document.getElementById('lastName');
 lastName.addEventListener("input", (event) => {
     //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
-    const regex = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/);
-    const valid = regex.test(event.target.value);
+    
+    const valid = nameRegex.test(event.target.value);
 
     const errorEl = document.getElementById('lastNameErrorMsg');
 
@@ -248,4 +253,11 @@ email.addEventListener("input", (event) => {
         errorEl.textContent = "";
     }
 
+});
+
+//Evenement submit sur l'envoi du formulaire
+
+const form = document.querySelector('.cart_order_form');
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
 });
