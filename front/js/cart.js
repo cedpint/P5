@@ -163,6 +163,7 @@ function deleteItem(){
 }
 
 //Controle saisies formulaire
+
 const nameRegex = new RegExp(
     /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
   );
@@ -174,7 +175,7 @@ firstName.addEventListener("input", (event) => {
     const regex = new RegExp(
         /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
       );
-    const valid = nameRegex.test(event.target.value);
+    const valid = validateName(event.target.value);
 
     const errorEl = document.getElementById('firstNameErrorMsg');
 
@@ -191,7 +192,7 @@ const lastName = document.getElementById('lastName');
 lastName.addEventListener("input", (event) => {
     //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
     
-    const valid = nameRegex.test(event.target.value);
+    const valid = validateFirstName(event.target.value);
 
     const errorEl = document.getElementById('lastNameErrorMsg');
 
@@ -203,12 +204,39 @@ lastName.addEventListener("input", (event) => {
 
 });
 
+//Fonctions
+const validateName = (value) => {
+    const regex = new RegExp(
+        /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
+      );
+
+    return validateName(value);
+
+}
+
+const validateAddress = (value) => {
+    const regex = new RegExp("^[^.?!:;,/\\/_-]([, .:;'-]?[0-9a-zA-Zàâäéèêëïîôöùûüç])+[^.?!:;,/\\/_-]$");
+    return validateAddress(value);
+}
+
+
+const validateCity = (value) => {
+    const regex = new RegExp(/^[a-z][a-z.,]{1,31}$|^$/i);
+    return validateCity(value);
+}
+
+const validateEmail = (value) => {
+    const regex = new RegExp(/^[a-z][a-z.,]{1,31}$|^$/i);
+    return validateEmail(value);
+}
+
+
 //Controle ADDRESS
 const address = document.getElementById('address');
 address.addEventListener("input", (event) => {
     //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
     const regex = new RegExp("^[^.?!:;,/\\/_-]([, .:;'-]?[0-9a-zA-Zàâäéèêëïîôöùûüç])+[^.?!:;,/\\/_-]$");
-    const valid = regex.test(event.target.value);
+    const valid = validateAddress(event.target.value);
 
     const errorEl = document.getElementById('addressErrorMsg');
 
@@ -225,7 +253,7 @@ const city = document.getElementById('city');
 city.addEventListener("input", (event) => {
     //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
     const regex = new RegExp(/^[a-z][a-z.,]{1,31}$|^$/i);
-    const valid = regex.test(event.target.value);
+    const valid = validateCity(event.target.value);
 
     const errorEl = document.getElementById('cityErrorMsg');
 
@@ -243,7 +271,7 @@ const email = document.getElementById('email');
 email.addEventListener("input", (event) => {
     //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
     const regex = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
-    const valid = regex.test(event.target.value);
+    const valid = validateEmail(event.target.value);
 
     const errorEl = document.getElementById('emailErrorMsg');
 
@@ -256,8 +284,17 @@ email.addEventListener("input", (event) => {
 });
 
 //Evenement submit sur l'envoi du formulaire
+const form = document.querySelector('.cart__order__form');
 
-const form = document.querySelector('.cart_order_form');
 form.addEventListener('submit', (event) => {
+    //Permet d'annuler le raffraichissement de la page
     event.preventDefault();
+
+    if(validateName(lastName.value) && validateName(firstName.value) && validateAddress(address.value) && validateCity(city.value) && validateEmail(email.value)){
+    console.log('ok');
+    } else {
+    conso    
+    console.log('pas ok');
+    }
+    
 });
