@@ -192,7 +192,7 @@ const lastName = document.getElementById('lastName');
 lastName.addEventListener("input", (event) => {
     //Utilisation de regex pour controler la saisie (regex101.com)+ utilisation d'une expression régulière (RegExp) 
     
-    const valid = validateFirstName(event.target.value);
+    const valid = validateName(event.target.value);
 
     const errorEl = document.getElementById('lastNameErrorMsg');
 
@@ -209,26 +209,25 @@ const validateName = (value) => {
     const regex = new RegExp(
         /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
       );
+    return regex.test(value);
 
-    return validateName(value);
-
-}
+};
 
 const validateAddress = (value) => {
     const regex = new RegExp("^[^.?!:;,/\\/_-]([, .:;'-]?[0-9a-zA-Zàâäéèêëïîôöùûüç])+[^.?!:;,/\\/_-]$");
-    return validateAddress(value);
-}
+    return regex.test(value);
+};
 
 
 const validateCity = (value) => {
-    const regex = new RegExp(/^[a-z][a-z.,]{1,31}$|^$/i);
-    return validateCity(value);
-}
+    const regex = new RegExp(/^[a-z][a-z. ,]{1,31}$|^$/i);
+    return regex.test(value);
+};
 
 const validateEmail = (value) => {
-    const regex = new RegExp(/^[a-z][a-z.,]{1,31}$|^$/i);
-    return validateEmail(value);
-}
+    const regex = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
+    return regex.test(value);
+};
 
 
 //Controle ADDRESS
@@ -285,16 +284,46 @@ email.addEventListener("input", (event) => {
 
 //Evenement submit sur l'envoi du formulaire
 const form = document.querySelector('.cart__order__form');
+form.reset();
 
 form.addEventListener('submit', (event) => {
     //Permet d'annuler le raffraichissement de la page
     event.preventDefault();
 
-    if(validateName(lastName.value) && validateName(firstName.value) && validateAddress(address.value) && validateCity(city.value) && validateEmail(email.value)){
-    console.log('ok');
-    } else {
-    conso    
-    console.log('pas ok');
+    if(
+        validateName(lastName.value) && 
+        validateName(firstName.value) && 
+        validateAddress(address.value) && 
+        validateCity(city.value) && 
+        validateEmail(email.value)
+    ) {
+    
+    
+    const data = {
+        contact : {
+            firstName : firstName.value, 
+            lastName : lastName.value,
+            address : address.value,
+            city : city.value,
+            email : email.value,
+        },
+        products : panier.map((product) => product.id), 
+    };
+
+        fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' }
+
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+           window.location.href = './confirmation.html?id=' + data.orderId; 
+        });
+    } else {   
+    alert('Veuillez remplir correctement le formulaire');
     }
     
 });
