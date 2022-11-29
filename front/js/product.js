@@ -2,6 +2,18 @@ console.log(window.location.search);
 /* Window permet de récupérer des informations sur la fenêtre du navigateur
 Donne accès à la propriété location qui est l'endroit ou on se situe qui est l'url
 */
+
+//**
+//* Retrieves the Id product
+// * @returns String
+// */
+//function getId() {
+//  const search = window.location.search;
+//  const searchParams = new URLSearchParams(search);
+//  return url.searchParams.get("id");
+//}
+
+
 const search = window.location.search;
 const searchParams = new URLSearchParams(search);
 /* searchParams est une class*/
@@ -11,6 +23,20 @@ const id = searchParams.get("id");
 console.log(id);
 
 /**/
+
+//**
+// * 
+// * @param {String} id 
+// * @returns 
+// */
+//function getData(id) {
+//  const response = fetch(`http://localhost:3000/api/products/${id}`);
+//  const id = response.json(); 
+
+//  return id;
+//}
+
+
 
 fetch(`http://localhost:3000/api/products/${id}`)
   /* 
@@ -26,6 +52,13 @@ Dans  la réponse (return) de notre précédent .then nous allons demander à r�
 */
   .then((product) => {
     console.log(product);
+
+
+/**
+ * Displays datas product
+ * @param {Array} product 
+ */
+ async function displayData (product){ 
 
     // Affichage de la photo des différents canapés
     // Création d'un nouvel élément du document et affichage de celui-ci dans le DOM
@@ -56,6 +89,7 @@ Dans  la réponse (return) de notre précédent .then nous allons demander à r�
       colorOfItem.value = color;
       colorOfItem.innerHTML = color;
     }
+  }
 
     //Selection de l'Id quantity
     const selectedQuantity = document.querySelector("#quantity");

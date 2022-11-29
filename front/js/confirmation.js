@@ -1,8 +1,32 @@
-//Récupération de l'order ID
+/**
+ * Retrieves the orderId from the URL
+ * @returns String
+ */
+function getOrderId() {
+    const url = new URL (window.location.href);
+    return url.searchParams.get("id");
+}
 
-const url = new URL (window.location.href);
-const id = url.searchParams.get("id");
-const orderId = document.getElementById("orderId");
-orderId.innerHTML = id;
+/**
+ * Displays the orderId on the page
+ * @param {String} id 
+ */
+function displayOrderId(id) {
+    const orderId = document.getElementById("orderId");
+    orderId.innerHTML = id;
+}
 
-localStorage.clear();
+/**
+ * Clears the cart
+ */
+function clearCart() {
+    localStorage.clear();
+}
+
+function init() {
+    const orderId = getOrderId();
+    displayOrderId(orderId);
+    clearCart();
+}
+
+init();
