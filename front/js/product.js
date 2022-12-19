@@ -64,7 +64,7 @@ function addToCart(product) {
 
   const qtyValue = parseInt(quantity.value);
 
-  if (qtyValue < 1) {
+  if (!qtyValue || qtyValue < 1) {
     alert('Veuillez renseigner une quantité');
     return;
   }
