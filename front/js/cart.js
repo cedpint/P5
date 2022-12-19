@@ -21,7 +21,7 @@ async function getData() {
   totalPrice = 0;
   totalQty = 0;
 
-  if (!panier.length) {
+  if (!panier || !panier.length) {
     const main = document.querySelector('main');
     main.innerHTML = 'Aucun article dans le panier';
   }
